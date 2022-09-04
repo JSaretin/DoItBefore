@@ -128,8 +128,8 @@
 	.countdown {
 		font-size: 5.5em;
 		font-family: 'Bangers', cursive;
-		word-break: keep-all;
-		white-space: nowrap;
+		/* word-break: keep-all; */
+		/* white-space: nowrap; */
 		letter-spacing: 0.1rem;
 	}
 
