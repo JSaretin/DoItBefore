@@ -1,38 +1,23 @@
-# create-svelte
+# DoItBefore
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+I have been coding for a long time, and one thing that I haven't fully gotton rid of is procastination, and writing a good README, that is why I have built the project to help me solve to two problem.
 
-## Creating a project
+Most times, when I get an idea for a project, I get really excited (even too excited), I forget to create a todo or a README for my project, so with this project, I can create a todo, README, and a deadline for my project, while being able to keep track of the countdown.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Improvment
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+There are lots of things that I would like to add and modify if this project, I just want to get it working so I can start using it ASAP, one of the reason that even made me build this project is the ability to make it work offline (which I haven't added yet)
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Todos:
 
-## Developing
+I can't think of things that I want to add currently (as I write this), so I will leave a link that refer to the project todo, so I can also live update it
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+[like to todos]()
 
-```bash
-npm run dev
+## Contribution
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+this project is very open to anyone that want to contribute to it, and I hope this will help boost productivity for alot of persons out there
 
-## Building
+## Licening
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+This project is license under the MIT, which means anyone can reuse any part or the whole code for this project without any queries or copyright issues.
