@@ -111,7 +111,6 @@
 		max-width: 800px;
 		margin: auto;
 		width: 100%;
-		/* background-color: bisque; */
 
 		gap: 2rem;
 		/* padding: 2rem; */

@@ -11,30 +11,29 @@
 	div {
 		width: 100%;
 		display: flex;
-        background-color: rgb(255, 255, 255);
-        border-radius: .5rem;
-        overflow: hidden;
+		background-color: rgb(238, 236, 236);
+		border-radius: 0.5rem;
+		overflow: hidden;
 	}
 
-    input {
-        padding:.6rem;
-        outline: none;
-        border: none;
-    }
+	input {
+		padding: 0.3rem 0.6rem;
+		outline: none;
+		border: none;
+	}
 
 	input[type='text'] {
 		flex: 1;
-        background-color: transparent;
+		background-color: transparent;
 	}
 
-    input:last-child {
-        background-color: rgb(239, 101, 101);
-        cursor: pointer;
-        transition: all ease 300ms;
+	input:last-child {
+		background-color: rgb(239, 101, 101);
+		cursor: pointer;
+		transition: all ease 300ms;
+	}
 
-    }
-
-    input:last-child:hover {
-        background-color: red;
-    }
+	input:last-child:hover {
+		background-color: red;
+	}
 </style>
