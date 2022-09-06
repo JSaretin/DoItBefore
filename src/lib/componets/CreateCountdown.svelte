@@ -61,6 +61,7 @@
 		Target day
 		<input type="datetime-local" bind:value={data.deadline} required />
 	</label>
+
 	<div class="todos">
 		<input type="button" value="add todo" aria-label="add-todo" on:click={addTodo} />
 
@@ -73,6 +74,10 @@
 			/>
 		{/each}
 	</div>
+	<label>
+		Is public
+		<input type="checkbox" bind:checked={data.is_public} required />
+	</label>
 	<button>start countdown</button>
 </form>
 
