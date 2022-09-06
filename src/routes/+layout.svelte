@@ -52,13 +52,14 @@
 		/* gap: 0.5rem; */
 		border-radius: 100%;
 		overflow: hidden;
-		padding: 0.2rem;
+		/* padding: 0.2rem; */
 		cursor: pointer;
+		box-shadow: 0px 0px 6px rgba(10, 0, 0, 0.309);
 	}
 	.bugger span {
 		display: block;
 		width: 100%;
-		height: 0.3rem;
+		height: 0.4rem;
 		background-color: rgb(5, 5, 5);
 	}
 	header {
@@ -67,7 +68,6 @@
 		background-color: rgba(0, 0, 0, 0.947);
 		position: fixed;
 		z-index: 9999;
-		box-shadow: 0px 2px 3px rgba(10, 0, 0, 0.309);
 		backdrop-filter: blur(2px);
 
 		max-width: 200px;
@@ -141,6 +141,7 @@
 		.bugger {
 			background-color: #fff;
 			top: initial;
+			right: 2rem;
 			bottom: 2rem;
 		}
 	}
