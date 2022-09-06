@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import TodoIntput from '$lib/componets/TodoIntput.svelte';
-	import type { Data, SavedData } from '$lib/structure';
+	import type { CountdownForm, SavedCountdown } from '$lib/structure';
 	import { createEventDispatcher } from 'svelte';
 
 	export let user: { key?: string };
-	let data: Data = {
+	let data: CountdownForm = {
 		deadline: '',
 		description: '',
-		todos: []
+		todos: [],
+		is_public: true
 	};
 
 	const addTodo = () => {
@@ -42,7 +43,7 @@
 			body: JSON.stringify(data)
 		});
 
-		const response: SavedData = await request.json();
+		const response: SavedCountdown = await request.json();
 		emiter('addcountdown', response);
 	};
 </script>

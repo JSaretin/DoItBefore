@@ -1,11 +1,23 @@
 import { deta } from '$lib/deta';
-import type { Data } from '$lib/structure';
+import type { CountdownForm, CountdownToSave, SavedCountdown } from '$lib/structure';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ request }) => {
-	const data = await request.json();
-	// data['lastupdated'] = new Date().getTime();
-	const saveData = await deta.Base('doitbefore').put(data);
-	return json(saveData);
+export const POST: RequestHandler = async ({ request, locals }) => {
+	if (!locals.user?.key)
+		return {
+			status: 401,
+			errors: {
+				message: '!auth'
+			}
+		};
+	const data: CountdownForm = await request.json();
+	const parsedCountdown: CountdownToSave = {
+		...data,
+		created_at: new Date().getTime(),
+		can_edit: [],
+		owner: locals.user.key
+	};
+	const createdCountdown: SavedCountdown = await deta.Base('doitbefore').put(parsedCountdown);
+	return json(createdCountdown);
 };
