@@ -105,16 +105,7 @@
 </div>
 
 <style>
-	.container {
-		display: flex;
-		flex-direction: column;
-		max-width: 800px;
-		margin: auto;
-		width: 100%;
-
-		gap: 2rem;
-		/* padding: 2rem; */
-	}
+	
 
 	span {
 		font-style: oblique;
