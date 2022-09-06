@@ -9,6 +9,7 @@
 		background-color: #f0f2f5;
 		/* background-color: red; */
         padding: 1rem;
+		overflow: auto;
 	}
 
 	:global(*) {
