@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { SavedData } from '$lib/structure';
+	import type { SavedCountdown } from '$lib/structure';
 	import { renderRemainingTime } from '$lib/utils';
 
-	export let countdown: SavedData;
+	export let countdown: SavedCountdown;
 
 	const done = countdown.todos.filter((t) => t.completed == true).length;
 
@@ -12,7 +12,7 @@
 	}, 1000);
 </script>
 
-<a href={'/view-' + countdown.key} sveltekit:prefetch>
+<a href={'/view-' + countdown.key} data-sveltekit-prefetch>
 	<div class="countdown">
 		<h1 class="timer">
 			{#if !timeLeft}

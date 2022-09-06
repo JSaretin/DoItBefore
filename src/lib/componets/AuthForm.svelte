@@ -33,9 +33,9 @@
 	</div>
 	<small>
 		{#if isRegister}
-			already have an account? <a href="/login" sveltekit:prefetch>login</a>
+			already have an account? <a href="/login" data-sveltekit-prefetch>login</a>
 		{:else}
-			don't have an account? <a href="/register" sveltekit:prefetch>register</a>
+			don't have an account? <a href="/register" data-sveltekit-prefetch>register</a>
 		{/if}
 	</small>
 </form>
