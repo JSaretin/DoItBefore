@@ -59,7 +59,7 @@
 	}
 
 	.timer {
-		font-size: 1.3rem;
+		font-size: 1rem;
 		color: rgb(28, 1, 51);
 	}
 

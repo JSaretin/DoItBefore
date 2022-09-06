@@ -1,9 +1,18 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { Action } from '../$types';
+import type { Action, PageServerLoad } from '../$types';
 import bcrypt from 'bcryptjs';
 import { deta } from '$lib/deta';
+import { parse, serialize } from 'cookie';
+import jwt from 'jsonwebtoken';
 
-export const POST: Action = async ({ request }) => {
+export const load: PageServerLoad = async ({ request }) => {
+	const token: string | undefined = parse(request.headers.get('cookie') || '')?.auth_token;
+	if (token !== undefined) {
+		throw redirect(302, '/');
+	}
+};
+
+export const POST: Action = async ({ request, setHeaders }) => {
 	const form = await request.formData();
 	const email = form.get('email')?.toString(),
 		password = form.get('password')?.toString();
@@ -26,10 +35,9 @@ export const POST: Action = async ({ request }) => {
 		};
 	}
 
-	const user: { password: string } = queryUser.items[0];
+	const user: { password: string; key: string } = queryUser.items[0];
 
 	const verified = await bcrypt.compare(password, user.password);
-	console.log(verified);
 	if (!verified) {
 		return {
 			status: 400,
@@ -38,6 +46,19 @@ export const POST: Action = async ({ request }) => {
 			}
 		};
 	}
-	// await deta.Base('doitbefore_users').put({ email, name, password: hashedPassword });
+
+	const jwtToken = jwt.sign({ user_id: user.key }, process.env.SECRETKEY!, {
+		expiresIn: '7d'
+	});
+
+	const token = serialize('auth_token', jwtToken, {
+		path: '/',
+		expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
+		maxAge: 1000 * 60 * 60 * 24 * 7,
+		httpOnly: true
+	});
+
+	setHeaders({ 'set-cookie': token });
+
 	return redirect(302, '/');
 };

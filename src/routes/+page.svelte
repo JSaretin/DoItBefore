@@ -3,15 +3,20 @@
 	import CreateCountdown from '$lib/componets/CreateCountdown.svelte';
 
 	import type { SavedData } from '$lib/structure';
+	import { writable, type Writable } from 'svelte/store';
 
-	export let data: { countdowns: SavedData[] };
-	const { countdowns } = data;
+	export let data: { countdowns: SavedData[]; user: { key?: string } };
+	const countdowns: Writable<SavedData[]> = writable(data.countdowns);
+
+	const updateCountdowns = (data: { details: SavedData }) => {
+		$countdowns = [data.details, ...$countdowns];
+	};
 </script>
 
 <div class="container">
-	<CreateCountdown />
+	<CreateCountdown on:addcountdown={updateCountdowns} user={data.user} />
 	<div class="countdowns">
-		{#each countdowns as countdown (countdown.key)}
+		{#each $countdowns as countdown (countdown.key)}
 			<CountDown {countdown} />
 		{/each}
 	</div>
@@ -21,9 +26,9 @@
 	.container {
 		max-width: 700px;
 		margin: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 	}
 	.countdowns {
 		width: 100%;

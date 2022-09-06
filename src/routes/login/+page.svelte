@@ -1,10 +1,10 @@
 <script lang="ts">
 	import AuthForm from '$lib/componets/AuthForm.svelte';
-	export let errors: { message?: string } = {message: 'sdafkldsf'};
+	export let errors: { message?: string };
 </script>
 
 <div class="container">
-	<AuthForm error={errors?.message} />
+	<AuthForm error={errors?.message}/>
 </div>
 
 <style>

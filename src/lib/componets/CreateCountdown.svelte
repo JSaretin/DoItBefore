@@ -4,6 +4,7 @@
 	import type { Data, SavedData } from '$lib/structure';
 	import { createEventDispatcher } from 'svelte';
 
+	export let user: { key?: string };
 	let data: Data = {
 		deadline: '',
 		description: '',
@@ -23,6 +24,15 @@
 			alert('the date you entered is in the past');
 			return;
 		}
+
+		if (!user?.key) {
+			const posts: { [key: string]: object } = JSON.parse(localStorage.getItem('posts') || '{}');
+			posts[crypto.randomUUID()] = data;
+			localStorage.setItem('posts', JSON.stringify(posts));
+			alert('you need to login to create a countdown, the current countdown has been saved');
+			return;
+		}
+
 		const request = await fetch('/api/countdown', {
 			method: 'POST',
 			headers: {
@@ -79,6 +89,7 @@
 		padding: 1rem;
 		font-family: 'Poppins', sans-serif;
 
+		position: relative;
 		/* margin-top: 2rem; */
 	}
 
