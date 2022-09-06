@@ -1,44 +1,38 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import type { SavedData } from '$lib/structure';
+	import type { PageConfig, SavedCountdown, User } from '$lib/structure';
 	import { renderRemainingTime } from '$lib/utils';
 
-	export let data: SavedData;
-
+	export let data: { countdown: SavedCountdown; user?: User };
+	const { countdown } = data;
 	let timeLeft: { days: string; hours: string; minutes: string; seconds: string } | string =
-		renderRemainingTime(data.deadline);
+		renderRemainingTime(countdown.deadline);
 
 	setInterval(() => {
-		timeLeft = renderRemainingTime(data.deadline);
+		timeLeft = renderRemainingTime(countdown.deadline);
 	}, 1000);
 
-	let showInfo: boolean = true;
-	let showTodos: boolean = false;
+	let pageConfig: PageConfig = { showInfo: false, showTodos: false };
+
+	let postSettings: { [key: string]: PageConfig };
 
 	const writeToLocalstorage = () => {
-		localStorage.setItem(
-			$page.params.countdown_id,
-			JSON.stringify({
-				data,
-				config: {
-					showInfo,
-					showTodos
-				}
-			})
-		);
+		postSettings[$page.params.countdown_id] = pageConfig;
+		localStorage.setItem('countdowns', JSON.stringify(postSettings));
 	};
 
 	if (browser) {
-		const retrivedData = localStorage.getItem($page.params.countdown_id);
-		if (retrivedData != null) {
-			const content: { data: SavedData; config: { showTodos: boolean; showInfo: boolean } } =
-				JSON.parse(retrivedData);
-			showInfo = content?.config?.showInfo;
-			showTodos = content?.config?.showTodos;
-			writeToLocalstorage();
+		postSettings = JSON.parse(localStorage.getItem('countdowns') || '{}');
+
+		if (Object.keys(postSettings).includes($page.params.countdown_id)) {
+			pageConfig = postSettings[$page.params.countdown_id];
 		}
 	}
+
+	const canEdit =
+		data?.user?.key == countdown.owner ||
+		countdown.can_edit.filter((obj) => obj.user_id == data?.user?.key).length != 0;
 </script>
 
 <div class="container">
@@ -57,38 +51,44 @@
 	<div class="config">
 		<label>
 			show description
-			<input type="checkbox" bind:checked={showInfo} on:change={writeToLocalstorage} />
+			<input type="checkbox" bind:checked={pageConfig.showInfo} on:change={writeToLocalstorage} />
 		</label>
 
-		{#if data.todos.length > 0 && showInfo}
+		{#if countdown.todos.length}
 			<label>
 				show todos
-				<input type="checkbox" bind:checked={showTodos} on:change={writeToLocalstorage} />
+				<input
+					type="checkbox"
+					bind:checked={pageConfig.showTodos}
+					on:change={writeToLocalstorage}
+				/>
 			</label>
 		{/if}
 	</div>
 
-	{#if showInfo}
-		<div class="content">
+	<div class="content">
+		{#if pageConfig.showInfo}
 			<p class="sumary">
-				{data.description}
+				{countdown.description}
 			</p>
+		{/if}
 
-			{#if data.todos.length > 0 && showTodos}
-				<div class="todos">
-					<h3>Milestones</h3>
-					{#each data.todos as todo (todo.id)}
-						<div class={'todo ' + (todo.completed ? 'done' : 'pending')}>
-							<p>
-								{todo.title}
-							</p>
+		{#if pageConfig.showTodos}
+			<div class="todos">
+				<h3>Milestones</h3>
+				{#each countdown.todos as todo (todo.id)}
+					<div class={'todo ' + (todo.completed ? 'done' : 'pending')}>
+						<p>
+							{todo.title}
+						</p>
+						{#if canEdit}
 							<input
 								type="checkbox"
 								bind:checked={todo.completed}
 								on:change={async () => {
 									const request = await fetch('', {
 										method: 'POST',
-										body: JSON.stringify(data.todos),
+										body: JSON.stringify(countdown),
 										headers: { accept: 'application/json', 'Content-Type': 'application/json' }
 									});
 									if (!request.ok) {
@@ -96,12 +96,12 @@
 									}
 								}}
 							/>
-						</div>
-					{/each}
-				</div>
-			{/if}
-		</div>
-	{/if}
+						{/if}
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
